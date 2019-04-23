@@ -1,0 +1,11 @@
+gobuster -w ../../../usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://10.10.10.109/sparklays/design/ -x html,php
+
+dirbuster -u http://10.10.10.109/sparklays/ -l ../../../usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt
+
+dirb http://10.10.10.109/sparklays/design/ cewlout -X .html,.php
+
+cewl -w cewlout http://10.10.10.109
+
+Then we’ll use john to transform each word in the wordlist according to the rules in /etc/john/john.conf.
+
+john --wordlist=cewlout --rules --stdout > cewlupdatedout.cewl
