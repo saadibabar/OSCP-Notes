@@ -1,0 +1,7 @@
+Filtered / bypass firewall
+
+nmap -A -T5 ip
+
+nmap -g 80 -sV ip //incase inbound traffic is allowed to port 80 only.
+
+nmap --script=firewall-bypass ip
